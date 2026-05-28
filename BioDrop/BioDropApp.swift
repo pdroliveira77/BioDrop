@@ -12,7 +12,7 @@ import SwiftData
 struct BioDropApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            LoginView()
         }
     }
 }

@@ -6,61 +6,69 @@
 //
 
 import SwiftUI
-import SwiftData
 
-struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+struct ContentView: View
+{
+    var body: some View
+        {
+            NavigationStack
+            {
+                ZStack
+                {
+                    LinearGradient(colors:
+                                    [Color.primariaTransparente,
+                                     .white],
+                                   startPoint: .topTrailing, endPoint: .bottomLeading)
+                        .ignoresSafeArea()
+                    
+                    VStack(spacing: 20)
+                    {
+                        Image("logoApp")
+                        Text("BioDrop")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .foregroundStyle(Color.primariaEscura)
 
-    var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
+                        Text("Por um futuro mais limpo e sustentável.")
+                            .foregroundStyle(Color.secondary)
+                            .multilineTextAlignment(.center)
+                        
+                        ZStack
+                        {
+                            VStack
+                            {
+                                Label("Email", systemImage: "envelope")
+                                    .foregroundColor(.secondary)
+                                TextField("Email", text: .constant(""))
+                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                                    .padding()
+                                
+                                Label("Senha", systemImage: "lock")
+                                    .foregroundColor(.secondary)
+                                Button("Entrar")
+                                {
+
+                                }
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(Color.primariaEscura)
+                                .foregroundColor(.white)
+                                .cornerRadius(12)
+                            }
+                            .padding(24)
+                        }
+                        .background(.ultraThinMaterial)
+                        .clipShape(RoundedRectangle(cornerRadius: 24))
+                        .overlay(RoundedRectangle(cornerRadius: 24)
+                            .stroke(.white.opacity(0.2), lineWidth: 1))
                     }
-                }
-                .onDelete(perform: deleteItems)
-            }
-#if os(macOS)
-            .navigationSplitViewColumnWidth(min: 180, ideal: 200)
-#endif
-            .toolbar {
-#if os(iOS)
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-#endif
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
+                    .padding()
                 }
             }
-        } detail: {
-            Text("Select an item")
         }
-    }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
-            }
-        }
-    }
 }
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+        
 }

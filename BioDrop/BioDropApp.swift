@@ -7,11 +7,20 @@
 
 import SwiftUI
 import SwiftData
+import Firebase
+import FirebaseAuth
 
 @main
-struct BioDropApp: App {
-    var body: some Scene {
-        WindowGroup {
+struct BioDropApp: App
+{
+    init()
+    {
+        FirebaseApp.configure()
+    }
+    var body: some Scene
+    {
+        WindowGroup
+        {
             LoginView()
         }
     }

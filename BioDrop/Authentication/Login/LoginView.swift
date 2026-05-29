@@ -10,7 +10,6 @@ import SwiftUI
 struct LoginView: View
 {
     @StateObject private var viewModel = LoginViewModel()
-    @State private var esconderSenha = true
     
     var body: some View
     {
@@ -85,6 +84,20 @@ struct LoginView: View
                     Spacer()
                 }
                 .padding(.horizontal, 24)
+            }
+            .alert(
+                "BioDrop",
+                isPresented: $viewModel.exibirAlerta
+            )
+            {
+                Button("OK", role: .cancel)
+                {
+
+                }
+            }
+            message:
+            {
+                Text(viewModel.mensagemAlerta)
             }
         }
     }

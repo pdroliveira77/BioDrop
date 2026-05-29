@@ -14,6 +14,8 @@ final class LoginViewModel: ObservableObject
 {
     @Published var email = ""
     @Published var senha = ""
+    @Published var exibirAlerta = false
+    @Published var mensagemAlerta = ""
 
     func login()
     {
@@ -38,20 +40,36 @@ final class LoginViewModel: ObservableObject
     
     func redefinirSenha()
     {
+        if email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        {
+            mensagemAlerta = "Preencha o e-mail para recuperar sua senha."
+            exibirAlerta = true
+            return
+        }
+        
         AuthService.shared.redefinirSenha(
             email: email
         )
         { resultado in
 
-            switch resultado
+            DispatchQueue.main.async
             {
+                switch resultado
+                {
                 case .success:
-
+                    self.mensagemAlerta =
+                    """
+                    Enviamos um e-mail de recuperação \
+                    para sua conta!
+                    """
+                    
+                    self.exibirAlerta = true
                     print("Email enviado!")
-
+                    
                 case .failure(let erro):
-
-                    print(erro.localizedDescription)
+                    self.mensagemAlerta = erro.localizedDescription
+                    self.exibirAlerta = true
+                }
             }
         }
     }

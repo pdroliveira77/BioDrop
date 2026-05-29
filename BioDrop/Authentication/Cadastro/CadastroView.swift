@@ -94,6 +94,23 @@ struct CadastroView: View
                 Spacer()
             }
             .padding(.horizontal, 24)
+            .alert(
+                "BioDrop",
+                isPresented: $viewModel.exibirAlerta
+            )
+            {
+                Button("OK")
+                {
+                    if viewModel.cadastroRealizado
+                    {
+                        dismiss()
+                    }
+                }
+            }
+            message:
+            {
+                Text(viewModel.mensagemAlerta)
+            }
         }
     }
 }

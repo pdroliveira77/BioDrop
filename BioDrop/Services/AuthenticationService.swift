@@ -67,4 +67,24 @@ final class AuthService
             completion(.success(usuario))
         }
     }
+    
+    func redefinirSenha(
+        email: String,
+        completion: @escaping (Result<Void, Error>) -> Void
+    )
+    {
+        Auth.auth().sendPasswordReset(
+            withEmail: email
+        )
+        { erro in
+
+            if let erro = erro
+            {
+                completion(.failure(erro))
+                return
+            }
+
+            completion(.success(()))
+        }
+    }
 }

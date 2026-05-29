@@ -11,6 +11,8 @@ struct BotaoEntrar: View
 {
     @ObservedObject var viewModel: LoginViewModel
     
+    var titulo = "Entrar"
+    
     var body: some View
     {
         Button
@@ -19,7 +21,7 @@ struct BotaoEntrar: View
         }
         label:
         {
-            Text("Entrar")
+            Text(self.titulo)
                 .font(.headline)
                 .fontWeight(.bold)
                 .foregroundStyle(.white)

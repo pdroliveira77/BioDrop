@@ -12,31 +12,40 @@ struct TextSenha: View
     @Binding var senha: String
     @State private var esconderSenha = true
     
+    var onEsqueciMinhaSenha: (() -> Void)?
+    var isExibirEsqueciSenha = true
+    var titulo = "SENHA"
+    var placeholder = "Digite sua senha"
+    var descricaoIcone = "lock"
+    
     var body: some View
     {
         VStack
         {
             HStack
             {
-                Text("SENHA")
+                Text(self.titulo)
                     .font(.caption)
                     .fontWeight(.bold)
                     .foregroundStyle(.secondary)
                 
                 Spacer()
                 
-                Button("Esqueci minha senha")
+                if isExibirEsqueciSenha
                 {
-                    
+                    Button("Esqueci minha senha")
+                    {
+                        onEsqueciMinhaSenha?()
+                    }
+                    .font(.footnote)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(Color.primariaEscura.opacity(0.9))
                 }
-                .font(.footnote)
-                .fontWeight(.semibold)
-                .foregroundStyle(Color.primariaEscura.opacity(0.9))
             }
 
             HStack
             {
-                Image(systemName: "lock")
+                Image(systemName: self.descricaoIcone)
                     .foregroundStyle(.secondary)
 
                 Group
@@ -44,14 +53,14 @@ struct TextSenha: View
                     if esconderSenha
                     {
                         SecureField(
-                            "Digite sua senha",
+                            self.placeholder,
                             text: $senha
                         )
                     }
                     else
                     {
                         TextField(
-                            "Digite sua senha",
+                            self.placeholder,
                             text: $senha
                         )
                     }
@@ -78,5 +87,5 @@ struct TextSenha: View
 }
 
 #Preview {
-    TextSenha(senha: .constant("1234"))
+    TextSenha(senha: .constant("1234"), isExibirEsqueciSenha: true)
 }

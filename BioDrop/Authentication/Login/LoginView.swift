@@ -11,8 +11,6 @@ struct LoginView: View
 {
     @StateObject private var viewModel = LoginViewModel()
     @State private var esconderSenha = true
-    @State private var email = ""
-    @State private var senha = ""
     
     var body: some View
     {
@@ -40,12 +38,16 @@ struct LoginView: View
                     {
                         VStack(alignment: .leading, spacing: 8)
                         {
-                            TextEmail(email: $email)
+                            TextEmail(email: $viewModel.email)
                         }
                         
                         VStack(alignment: .leading, spacing: 8)
                         {
-                            TextSenha(senha: $senha)
+                            TextSenha(senha: $viewModel.senha,
+                                    onEsqueciMinhaSenha:
+                                    {
+                                        viewModel.redefinirSenha()
+                                    })
                         }
                         
                         BotaoEntrar(viewModel: self.viewModel)
@@ -67,12 +69,16 @@ struct LoginView: View
                         Text("Não tem uma conta?")
                             .foregroundStyle(.secondary)
 
-                        Button("Criar conta agora")
+                        NavigationLink
                         {
-
+                            CadastroView()
                         }
-                        .fontWeight(.semibold)
-                        .foregroundStyle(Color.primariaEscura)
+                        label:
+                        {
+                            Text("Criar conta agora")
+                                .fontWeight(.semibold)
+                                .foregroundStyle(Color.primariaEscura)
+                        }
                     }
                     .font(.subheadline)
 

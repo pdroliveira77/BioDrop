@@ -35,4 +35,24 @@ final class LoginViewModel: ObservableObject
             }
         }
     }
+    
+    func redefinirSenha()
+    {
+        AuthService.shared.redefinirSenha(
+            email: email
+        )
+        { resultado in
+
+            switch resultado
+            {
+                case .success:
+
+                    print("Email enviado!")
+
+                case .failure(let erro):
+
+                    print(erro.localizedDescription)
+            }
+        }
+    }
 }

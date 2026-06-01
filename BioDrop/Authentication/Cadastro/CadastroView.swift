@@ -11,8 +11,6 @@ struct CadastroView: View
 {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = CadastroViewModel()
-
-    @State private var confirmacaoSenha = ""
     
     var body: some View
     {
@@ -49,7 +47,7 @@ struct CadastroView: View
                     
                     VStack(alignment: .leading, spacing: 8)
                     {
-                        TextSenha(senha: $confirmacaoSenha,
+                        TextSenha(senha: $viewModel.confirmacaoSenha,
                                   isExibirEsqueciSenha: false,
                                   titulo: "CONFIRME SUA SENHA",
                                   placeholder: "Digite a senha novamente",

@@ -14,17 +14,15 @@ final class CadastroViewModel: ObservableObject
 {
     @Published var email = ""
     @Published var senha = ""
+    @Published var confirmacaoSenha = ""
     @Published var exibirAlerta = false
     @Published var mensagemAlerta = ""
     @Published var cadastroRealizado = false
-
-    func verificarSenhasCompativeis()
-    {
-        //MARK: FALTA IMPLEMENTAR ESTA FUNÇÃO PARA VALIDAR O SEGUNDO CAMPO DE SENHA
-    }
     
     func criarConta(onSuccess: @escaping () -> Void)
     {
+        if !self.verificarSenhasCompativeis() { return }
+        
         AuthService.shared.criarConta(
             email: email,
             senha: senha)
@@ -75,5 +73,16 @@ final class CadastroViewModel: ObservableObject
                 }
             }
         }
+    }
+    
+    func verificarSenhasCompativeis() -> Bool
+    {
+        if senha != confirmacaoSenha
+        {
+            self.mensagemAlerta = "As senhas informadas não coincidem. Verifique e tente novamente."
+            self.exibirAlerta = true
+            return false
+        }
+        return true
     }
 }

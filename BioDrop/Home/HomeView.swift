@@ -7,9 +7,25 @@
 
 import SwiftUI
 
-struct HomeView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+struct HomeView: View
+{
+    var body: some View
+    {
+        ZStack(alignment: .bottom)
+        {
+            LinearGradient(colors: [.white, .terciariaTransparente, .secundariaTransparente],
+                           startPoint: .topLeading,
+                           endPoint: .bottomTrailing)
+                .ignoresSafeArea(edges: .bottom)
+            
+            VStack
+            {
+                Spacer()
+            }
+            
+            BottomNavigation()
+        }
+        .ignoresSafeArea(edges: .bottom)
     }
 }
 

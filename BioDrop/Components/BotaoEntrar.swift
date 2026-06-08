@@ -9,17 +9,12 @@ import SwiftUI
 
 struct BotaoEntrar: View
 {
-    @ObservedObject var viewModel: LoginViewModel
-    
     var titulo = "Entrar"
+    let acao: () -> Void
     
     var body: some View
     {
-        Button
-        {
-            self.viewModel.login()
-        }
-        label:
+        Button(action: acao)
         {
             Text(self.titulo)
                 .font(.headline)
@@ -51,5 +46,5 @@ struct BotaoEntrar: View
 
 #Preview
 {
-    BotaoEntrar(viewModel: LoginViewModel())
+    BotaoEntrar(acao: {})
 }

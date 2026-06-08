@@ -14,26 +14,24 @@ final class LoginViewModel: ObservableObject
 {
     @Published var email = ""
     @Published var senha = ""
-    @Published var exibirAlerta = false
     @Published var mensagemAlerta = ""
+    @Published var exibirAlerta = false
 
     func login()
     {
-        AuthService.shared.login(
-            email: email,
-            senha: senha
-        )
-        { resultado in
-
-            switch resultado
+        AuthService.shared.login(email: email,senha: senha)
+        {
+            resultado in
+            DispatchQueue.main.async
             {
+                switch resultado
+                {
                 case .success(let usuario):
-
                     print(usuario.email ?? "")
 
                 case .failure(let erro):
-
                     print(erro.localizedDescription)
+                }
             }
         }
     }

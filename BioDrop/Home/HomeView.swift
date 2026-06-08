@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct HomeView: View
 {
@@ -20,8 +21,39 @@ struct HomeView: View
             
             VStack
             {
+                ImagemBoasVindas()
+                
+                HStack
+                {
+                    BotaoImagemLegenda(titulo: "Solicitar \nretirada",
+                                       icone: "arrow.3.trianglepath",
+                                       acao: {})
+                    
+                    Spacer()
+                    
+                    BotaoImagemLegenda(titulo: "Ver pontos próximos",
+                                       icone: "mappin.and.ellipse",
+                                       acao: {})
+                }
+                .padding(.top, 24)
+                
+                Spacer()
+                Button("Logout")
+                {
+                    do
+                    {
+                        try Auth.auth().signOut()
+                        print("Logout realizado")
+                    }
+                    catch
+                    {
+                        print(error.localizedDescription)
+                    }
+                }
+                
                 Spacer()
             }
+            .padding(.horizontal, 20)
             
             BottomNavigation()
         }

@@ -17,11 +17,12 @@ struct BioDropApp: App
     {
         FirebaseApp.configure()
     }
+    
     var body: some Scene
     {
         WindowGroup
         {
-            LoginView()
+            AppView()
         }
     }
 }

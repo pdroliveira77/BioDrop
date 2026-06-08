@@ -49,7 +49,10 @@ struct LoginView: View
                                     })
                         }
                         
-                        BotaoEntrar(viewModel: self.viewModel)
+                        BotaoEntrar(titulo: "Entrar")
+                        {
+                            viewModel.login()
+                        }
                     }
                     .padding(24)
                     .background(

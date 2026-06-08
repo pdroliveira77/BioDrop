@@ -19,6 +19,20 @@ final class LoginViewModel: ObservableObject
 
     func login()
     {
+        if email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        {
+            mensagemAlerta = "Informe seu e-mail."
+            exibirAlerta = true
+            return
+        }
+
+        if senha.isEmpty
+        {
+            mensagemAlerta = "Informe sua senha."
+            exibirAlerta = true
+            return
+        }
+        
         AuthService.shared.login(email: email,senha: senha)
         {
             resultado in
@@ -30,7 +44,8 @@ final class LoginViewModel: ObservableObject
                     print(usuario.email ?? "")
 
                 case .failure(let erro):
-                    print(erro.localizedDescription)
+                    self.mensagemAlerta = self.tratarErroLogin(erro)
+                    self.exibirAlerta = true
                 }
             }
         }
@@ -69,6 +84,43 @@ final class LoginViewModel: ObservableObject
                     self.exibirAlerta = true
                 }
             }
+        }
+    }
+    
+    private func tratarErroLogin(_ erro: Error) -> String
+    {
+        guard let codigo = AuthErrorCode(
+            rawValue: (erro as NSError).code
+        ) else
+        {
+            return erro.localizedDescription
+        }
+
+        switch codigo
+        {
+        case .invalidEmail:
+            return "Informe um e-mail válido."
+
+        case .wrongPassword:
+            return "Usuário ou senha inválidos."
+
+        case .invalidCredential:
+            return "Usuário ou senha inválidos."
+
+        case .userNotFound:
+            return "Nenhuma conta encontrada para este e-mail."
+
+        case .emailAlreadyInUse:
+            return "Já existe uma conta cadastrada com este e-mail."
+
+        case .weakPassword:
+            return "A senha deve possuir pelo menos 6 caracteres."
+
+        case .networkError:
+            return "Verifique sua conexão com a internet."
+
+        default:
+            return "Ocorreu um erro inesperado. Tente novamente."
         }
     }
 }

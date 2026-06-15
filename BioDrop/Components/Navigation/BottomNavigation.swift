@@ -37,26 +37,21 @@ struct BottomNavigation: View
             Spacer()
         }
         .padding(.horizontal, 16)
-        .padding(.top, 12)
-        .padding(.bottom, 24)
+        .padding(.vertical, 8)
+        .background(Color.primariaEscura.opacity(0.09))
         .background(.ultraThinMaterial)
         .clipShape(
-            UnevenRoundedRectangle(
-                topLeadingRadius: 24,
-                topTrailingRadius: 24
-            ))
+            RoundedRectangle(cornerRadius: 24)
+        )
         .overlay
         {
-            UnevenRoundedRectangle(
-                topLeadingRadius: 24,
-                topTrailingRadius: 24
-            )
-                .stroke(.white.opacity(0.3), lineWidth: 1)
+            RoundedRectangle(cornerRadius: 24)
+            .stroke(Color.primariaEscura.opacity(0.15), lineWidth: 1)
         }
         .shadow(
-            color: .black.opacity(0.1),
-            radius: 10,
-            y: 4
+            color: Color.primariaEscura.opacity(0.25),
+            radius: 15,
+            y: 6
         )
     }
 }

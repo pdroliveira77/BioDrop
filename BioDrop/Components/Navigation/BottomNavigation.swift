@@ -9,6 +9,11 @@ import SwiftUI
 
 struct BottomNavigation: View
 {
+    let abaSelecionada: AbaSelecionada
+    let abrirHome: () -> Void
+    let abrirMapa: () -> Void
+    let abrirPerfil: () -> Void
+    
     var body: some View
     {
         HStack
@@ -17,46 +22,54 @@ struct BottomNavigation: View
             
             BotaoBottomNavigation(titulo: "Home",
                                   icone: "house",
-                                  selecionado: true,
-                                  acao: {})
+                                  selecionado: abaSelecionada == .home,
+                                  acao: abrirHome)
 
             Spacer()
 
             BotaoBottomNavigation(titulo: "Mapa",
                                   icone: "map",
-                                  selecionado: false,
-                                  acao: {})
+                                  selecionado: abaSelecionada == .mapa,
+                                  acao: abrirMapa)
 
             Spacer()
 
             BotaoBottomNavigation(titulo: "Perfil",
                                   icone: "person",
-                                  selecionado: false,
-                                  acao: {})
+                                  selecionado: abaSelecionada == .perfil,
+                                  acao: abrirPerfil)
             
             Spacer()
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
-        .background(Color.primariaEscura.opacity(0.09))
-        .background(.ultraThinMaterial)
-        .clipShape(
+        .background {
             RoundedRectangle(cornerRadius: 24)
-        )
-        .overlay
-        {
+                .fill(.ultraThinMaterial)
+        }
+        .overlay {
             RoundedRectangle(cornerRadius: 24)
-            .stroke(Color.primariaEscura.opacity(0.15), lineWidth: 1)
+                .stroke(
+                    LinearGradient(
+                        colors: [
+                            .white.opacity(0.4),
+                            .white.opacity(0.1)
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    ),
+                    lineWidth: 1
+                )
         }
         .shadow(
-            color: Color.primariaEscura.opacity(0.25),
-            radius: 15,
-            y: 6
+            color: .black.opacity(0.08),
+            radius: 20,
+            y: 8
         )
     }
 }
 
 #Preview
 {
-    BottomNavigation()
+    BottomNavigation(abaSelecionada: .perfil, abrirHome: {}, abrirMapa: {}, abrirPerfil: {})
 }

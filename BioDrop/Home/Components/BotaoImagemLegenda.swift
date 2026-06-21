@@ -45,7 +45,7 @@ struct BotaoImagemLegenda: View
             }
             .padding()
             .frame(width: 165)
-            .background(Color.terciariaTransparente.opacity(0.5))
+            .background(Color.neutraMuitoClara.opacity(0.3))
             .clipShape(RoundedRectangle(cornerRadius: 16))
         }
         .buttonStyle(.plain)

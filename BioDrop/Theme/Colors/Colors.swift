@@ -25,7 +25,11 @@ extension Color
     static let terciariaEscura = Color(hex: "#842225")
     
     static let neutraTransparente = Color(hex: "#6B7280")
+    static let neutraMuitoClara = Color(hex: "#EBF1FF")
     static let neutraClara = Color(hex: "#6B7280")
     static let neutra = Color(hex: "#6B7280")
     static let neutraEscura = Color(hex: "#404754")
+    
+    static let vermelhoClaro = Color(hex: "#FFB3AF")
+    static let vermelhoEscuro = Color(hex: "#650911")
 }

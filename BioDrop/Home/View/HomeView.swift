@@ -10,18 +10,23 @@ import FirebaseAuth
 
 struct HomeView: View
 {
+    @Binding var abaSelecionada: AbaSelecionada
+    
     var porcentagemSemanaAnterior = ""
     var dicaDia = ""
     var diasSeguidos = 0
+    
     private var corDestaque: Color
     {
-        diasSeguidos < 4 ? .orange.opacity(0.9) : .red
+        diasSeguidos < 4 ? .orange.opacity(0.9) : Color.vermelhoEscuro
     }
     
     var body: some View
     {
         ZStack(alignment: .bottom)
         {
+            GradientePadrao()
+            
             ScrollView(.vertical, showsIndicators: false)
             {
                 VStack
@@ -90,7 +95,7 @@ struct HomeView: View
                         }
                     }
                     .padding(12)
-                    .background(Color.terciariaTransparente.opacity(0.5))
+                    .background(Color.neutraMuitoClara.opacity(0.3))
                     .clipShape(RoundedRectangle(cornerRadius: 16))
                     
                     HStack
@@ -104,7 +109,7 @@ struct HomeView: View
                                 .font(.subheadline)
                         }
                         .padding()
-                        .background(Color.terciariaTransparente.opacity(0.5))
+                        .background(Color.neutraMuitoClara.opacity(0.3))
                         .clipShape(RoundedRectangle(cornerRadius: 16))
                         
                         Spacer()
@@ -115,7 +120,7 @@ struct HomeView: View
                                 .resizable()
                                 .frame(width: 30, height: 30)
                                 .foregroundStyle(corDestaque)
-                                
+                            
                             Text("\(diasSeguidos)")
                                 .font(.largeTitle)
                                 .foregroundStyle(corDestaque)
@@ -125,7 +130,7 @@ struct HomeView: View
                                 .foregroundStyle(corDestaque)
                         }
                         .padding()
-                        .background(diasSeguidos < 4 ? Color.yellow.opacity(0.2) : Color.red.opacity(0.2))
+                        .background(diasSeguidos < 4 ? Color.yellow.opacity(0.2) : Color.vermelhoClaro)
                         .clipShape(RoundedRectangle(cornerRadius: 16))
                         .overlay
                         {
@@ -137,26 +142,15 @@ struct HomeView: View
                         }
                     }
                     .padding(12)
-                    
-                    Button("Logout")
-                    {
-                        do
-                        {
-                            try Auth.auth().signOut()
-                            print("Logout realizado")
-                        }
-                        catch
-                        {
-                            print(error.localizedDescription)
-                        }
-                    }
-                    .padding(24)
                 }
             }
             .padding(.horizontal, 20)
             .safeAreaPadding(.bottom, 120)
             
-            BottomNavigation()
+            BottomNavigation(abaSelecionada: self.abaSelecionada,
+                             abrirHome: {abaSelecionada = .home},
+                             abrirMapa: {abaSelecionada = .mapa},
+                             abrirPerfil: {abaSelecionada = .perfil})
                 .padding(20)
         }
         .ignoresSafeArea(edges: .bottom)
@@ -164,7 +158,7 @@ struct HomeView: View
 }
 
 #Preview {
-    HomeView(porcentagemSemanaAnterior: "12",
+    HomeView(abaSelecionada: .constant(.home) , porcentagemSemanaAnterior: "12",
              dicaDia: "Lave bem suas embalagens antes do descarte para facilitar o processo.",
-             diasSeguidos: 2)
+             diasSeguidos: 6)
 }

@@ -15,7 +15,7 @@ struct AppView: View
     {
         if sessionManager.usuarioLogado
         {
-            HomeView()
+            MainView()
         }
         else
         {

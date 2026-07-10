@@ -6,10 +6,10 @@
 //
 
 import SwiftUI
-import FirebaseAuth
 
 struct PerfilView: View
 {
+    @ObservedObject var viewModel: PerfilViewModel
     @Binding var abaSelecionada: AbaSelecionada
     
     var body: some View
@@ -21,43 +21,18 @@ struct PerfilView: View
             {
                 VStack
                 {
-                    BotaoComImagem(nomeImagem: "person",
-                                   descricaoBotao: "Editar Perfil",
-                                   exibirChevron: true)
+                    ForEach(viewModel.itens)
                     {
-                        print("Clicou no editar perfil")
-                    }
-                    
-                    BotaoComImagem(nomeImagem: "shield.pattern.checkered",
-                                   descricaoBotao: "Privacidade e Segurança",
-                                   exibirChevron: true)
-                    {
-                        print("Clicou no Privacidade e Segurança")
-                    }
-                    
-                    BotaoComImagem(nomeImagem: "questionmark.circle",
-                                   descricaoBotao: "Central de Ajuda",
-                                   exibirChevron: true)
-                    {
-                        print("Clicou no Central de Ajuda")
-                    }
-                    
-                    BotaoComImagem(nomeImagem: "iphone.and.arrow.right.outward",
-                                   descricaoBotao: "Sair",
-                                   exibirChevron: false,
-                                   corFundo: .vermelhoEscuro)
-                    {
-                        do
+                        item in
+   
+                        BotaoComImagem(item: item,
+                                       corFundo: item.opcaoSelecionada.corFundo)
                         {
-                            try Auth.auth().signOut()
-                        }
-                        catch
-                        {
-                            print(error.localizedDescription)
+                            viewModel.selecionar(item)
                         }
                     }
+                    .padding()
                 }
-                .padding()
                 
                 Spacer()
                 
@@ -74,5 +49,6 @@ struct PerfilView: View
 }
 
 #Preview {
-    PerfilView(abaSelecionada: .constant(.perfil))
+    PerfilView(viewModel: PerfilViewModel(),
+               abaSelecionada: .constant(.perfil))
 }

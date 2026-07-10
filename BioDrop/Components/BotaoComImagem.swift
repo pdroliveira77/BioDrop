@@ -9,9 +9,7 @@ import SwiftUI
 
 struct BotaoComImagem: View
 {
-    var nomeImagem = ""
-    var descricaoBotao = ""
-    var exibirChevron = true
+    let item: MenuItem
     var corFundo: Color = .neutraEscura
     var action: () -> Void
     
@@ -21,16 +19,16 @@ struct BotaoComImagem: View
         {
             HStack
             {
-                Image(systemName: nomeImagem)
+                Image(systemName: item.icone)
                     .resizable()
                     .frame(width: 20, height: 20)
                 
-                Text(descricaoBotao)
+                Text(item.titulo)
                     .font(.headline)
                 
                 Spacer()
                 
-                if exibirChevron
+                if item.exibirChevron
                 {
                     Image(systemName: "chevron.right")
                         .renderingMode(.template)
@@ -39,9 +37,14 @@ struct BotaoComImagem: View
             .foregroundStyle(corFundo)
         }
         .buttonStyle(.plain)
+        .frame(maxWidth: .infinity)
     }
 }
 
 #Preview {
-    BotaoComImagem(nomeImagem: "person", descricaoBotao: "Editar Perfil", exibirChevron: true, action: {})
+    BotaoComImagem(item: MenuItem(titulo: "Perfil",
+                                  icone: "person",
+                                  exibirChevron: true,
+                                  opcaoSelecionada: .perfil),
+                   action: {})
 }

@@ -22,7 +22,7 @@ struct MainView: View
             MapaView(abaSelecionada: $abaSelecionada)
 
         case .perfil:
-            PerfilView(abaSelecionada: $abaSelecionada)
+            PerfilView(viewModel: PerfilViewModel(), abaSelecionada: $abaSelecionada)
         }
     }
 }

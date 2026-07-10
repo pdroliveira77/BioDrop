@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct MapaView: View
 {
+    @StateObject private var viewModel = MapaViewModel()
     @Binding var abaSelecionada: AbaSelecionada
     
     var body: some View
@@ -16,6 +18,20 @@ struct MapaView: View
         ZStack
         {
             GradientePadrao()
+            
+            Map(position: $viewModel.posicao)
+            {
+                ForEach(viewModel.pontos)
+                {
+                    ponto in
+
+                    Marker(
+                        ponto.nome,
+                        coordinate: ponto.coordenada
+                    )
+                }
+            }
+            .mapStyle(.standard)
             
             VStack
             {
@@ -27,6 +43,10 @@ struct MapaView: View
                                  abrirPerfil: {abaSelecionada = .perfil})
                     .padding(20)
             }
+        }
+        .onAppear
+        {
+            viewModel.locationManager.solicitarPermissao()
         }
         .ignoresSafeArea(edges: .bottom)
     }

@@ -10,30 +10,25 @@ import SwiftUI
 import MapKit
 import Combine
 
+@MainActor
 final class MapaViewModel: ObservableObject
 {
     @Published var posicao: MapCameraPosition = .userLocation(followsHeading: false, fallback: .automatic)
+    @Published var pontosColeta: [PontoColeta] = []
     
+    private let service = OverpassService()
     let locationManager = LocationManager()
 
-    let pontos: [PontoColeta] =
-    [
-        PontoColeta(
-            nome: "Coleta Centro",
-            endereco: "Av. Afonso Pena",
-            coordenada: CLLocationCoordinate2D(
-                latitude: -19.9191,
-                longitude: -43.9386
-            )
-        ),
-
-        PontoColeta(
-            nome: "Ecoponto Savassi",
-            endereco: "Praça da Savassi",
-            coordenada: CLLocationCoordinate2D(
-                latitude: -19.9387,
-                longitude: -43.9344
-            )
-        )
-    ]
+    func carregarPontosColeta(latitude: Double, longitude: Double) async
+    {
+        do
+        {
+            pontosColeta = try await service.buscarPontos(latitude: latitude,
+                                                          longitude: longitude)
+        }
+        catch
+        {
+            print(error)
+        }
+    }
 }

@@ -21,14 +21,22 @@ struct MapaView: View
             
             Map(position: $viewModel.posicao)
             {
-                ForEach(viewModel.pontos)
+                ForEach(viewModel.pontosColeta)
                 {
                     ponto in
 
-                    Marker(
+//                    Marker(
+//                        ponto.nome,
+//                        coordinate: ponto.coordenada
+//                    )
+                    Annotation(
                         ponto.nome,
                         coordinate: ponto.coordenada
-                    )
+                    ) {
+
+                        Image(systemName: "leaf.fill")
+                            .foregroundStyle(.green)
+                    }
                 }
             }
             .mapStyle(.standard)

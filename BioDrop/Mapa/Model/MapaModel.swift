@@ -10,7 +10,7 @@ import CoreLocation
 
 struct PontoColeta: Identifiable
 {
-    let id = UUID()
+    let id: Int
     let nome: String
     let endereco: String
     let coordenada: CLLocationCoordinate2D

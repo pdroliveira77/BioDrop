@@ -11,10 +11,7 @@ import CoreLocation
 final class OverpassService
 {
 
-    func buscarPontos(
-        latitude: Double,
-        longitude: Double
-    ) async throws -> [PontoColeta]
+    func buscarPontos(latitude: Double, longitude: Double) async throws -> [PontoColeta]
     {
         let query = """
         [out:json];
@@ -41,7 +38,12 @@ final class OverpassService
 
         request.httpBody = body.data(using: .utf8)
 
-        let (data, _) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await URLSession.shared.data(for: request)
+        if let httpResponse = response as? HTTPURLResponse {
+            print("Status Code:", httpResponse.statusCode)
+        }
+
+        print(String(data: data, encoding: .utf8) ?? "Sem resposta")
 
         let retorno = try JSONDecoder().decode(
             RespostaOverpass.self,
@@ -52,22 +54,21 @@ final class OverpassService
 
             let latitude = elemento.latitude ?? elemento.centro?.latitude
             let longitude = elemento.longitude ?? elemento.centro?.longitude
+            let endereco = [
+                elemento.tags?.rua,
+                elemento.tags?.numero,
+                elemento.tags?.bairro,
+                elemento.tags?.cidade
+            ]
+            .compactMap { $0 }
+            .joined(separator: ", ")
 
-            guard
-                let latitude,
-                let longitude
-            else {
-                return nil
-            }
+            guard let latitude, let longitude else { return nil }
 
-            return PontoColeta(
-                id: elemento.id, endereco: elemento, coordenada: <#T##CLLocationCoordinate2D#>
-                nome: elemento.tags?.nome ?? "Ponto de coleta",
-                coordinate: CLLocationCoordinate2D(
-                    latitude: latitude,
-                    longitude: longitude
-                )
-            )
+            return PontoColeta( id: elemento.id,
+                                nome: elemento.tags?.nome ?? "Ponto de coleta",
+                                endereco: endereco,
+                                coordenada: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
         }
     }
 }

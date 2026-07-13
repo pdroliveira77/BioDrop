@@ -25,10 +25,6 @@ struct MapaView: View
                 {
                     ponto in
 
-//                    Marker(
-//                        ponto.nome,
-//                        coordinate: ponto.coordenada
-//                    )
                     Annotation(
                         ponto.nome,
                         coordinate: ponto.coordenada
@@ -39,7 +35,7 @@ struct MapaView: View
                     }
                 }
             }
-            .mapStyle(.standard)
+            .mapStyle(.standard(elevation: .flat ,pointsOfInterest: .excludingAll, showsTraffic: false))
             
             VStack
             {
@@ -50,6 +46,16 @@ struct MapaView: View
                                  abrirMapa: {abaSelecionada = .mapa},
                                  abrirPerfil: {abaSelecionada = .perfil})
                     .padding(20)
+            }
+        }
+        .onChange(of: viewModel.locationManager.location)
+        {
+            _, novaLocalizacao in
+            guard novaLocalizacao != nil else { return }
+
+            Task
+            {
+                await viewModel.carregarPontosColeta()
             }
         }
         .onAppear

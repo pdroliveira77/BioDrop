@@ -10,6 +10,7 @@ import FirebaseAuth
 
 struct HomeView: View
 {
+    @ObservedObject var viewModel: HomeViewModel
     @Binding var abaSelecionada: AbaSelecionada
     
     var porcentagemSemanaAnterior = ""
@@ -35,9 +36,32 @@ struct HomeView: View
                     
                     HStack
                     {
-                        BotaoImagemLegenda(titulo: "Solicitar \nretirada",
-                                           icone: "arrow.3.trianglepath",
-                                           acao: {})
+                        VStack(spacing: 5)
+                        {
+                            Image(systemName: diasSeguidos < 4 ? "timer" : "flame")
+                                .resizable()
+                                .frame(width: 30, height: 30)
+                                .foregroundStyle(corDestaque)
+                            
+                            Text("\(diasSeguidos)")
+                                .font(.largeTitle)
+                                .foregroundStyle(corDestaque)
+                            
+                            Text("Dias seguidos").textCase(.uppercase)
+                                .font(.caption)
+                                .foregroundStyle(corDestaque)
+                        }
+                        .padding()
+                        .background(diasSeguidos < 4 ? Color.yellow.opacity(0.2) : Color.vermelhoClaro)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                        .overlay
+                        {
+                            RoundedRectangle(cornerRadius: 16)
+                                .stroke(
+                                    corDestaque,
+                                    lineWidth: 1
+                                )
+                        }
                         
                         Spacer()
                         
@@ -100,46 +124,7 @@ struct HomeView: View
                     
                     HStack
                     {
-                        VStack
-                        {
-                            Text("Dica do dia")
-                                .font(.title3)
-                            
-                            Text(dicaDia)
-                                .font(.subheadline)
-                        }
-                        .padding()
-                        .background(Color.neutraMuitoClara.opacity(0.3))
-                        .clipShape(RoundedRectangle(cornerRadius: 16))
-                        
-                        Spacer()
-                        
-                        VStack(spacing: 5)
-                        {
-                            Image(systemName: diasSeguidos < 4 ? "timer" : "flame")
-                                .resizable()
-                                .frame(width: 30, height: 30)
-                                .foregroundStyle(corDestaque)
-                            
-                            Text("\(diasSeguidos)")
-                                .font(.largeTitle)
-                                .foregroundStyle(corDestaque)
-                            
-                            Text("Dias seguidos").textCase(.uppercase)
-                                .font(.caption)
-                                .foregroundStyle(corDestaque)
-                        }
-                        .padding()
-                        .background(diasSeguidos < 4 ? Color.yellow.opacity(0.2) : Color.vermelhoClaro)
-                        .clipShape(RoundedRectangle(cornerRadius: 16))
-                        .overlay
-                        {
-                            RoundedRectangle(cornerRadius: 16)
-                                .stroke(
-                                    corDestaque,
-                                    lineWidth: 1
-                                )
-                        }
+                        DicaDoDiaView(dica: viewModel.dicaDoDia)
                     }
                     .padding(12)
                 }
@@ -158,7 +143,9 @@ struct HomeView: View
 }
 
 #Preview {
-    HomeView(abaSelecionada: .constant(.home) , porcentagemSemanaAnterior: "12",
+    HomeView(viewModel: HomeViewModel(),
+             abaSelecionada: .constant(.home),
+             porcentagemSemanaAnterior: "12",
              dicaDia: "Lave bem suas embalagens antes do descarte para facilitar o processo.",
              diasSeguidos: 6)
 }

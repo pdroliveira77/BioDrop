@@ -16,7 +16,7 @@ struct MainView: View
         switch abaSelecionada
         {
         case .home:
-            HomeView(abaSelecionada: $abaSelecionada)
+            HomeView(viewModel: HomeViewModel(), abaSelecionada: $abaSelecionada)
 
         case .mapa:
             MapaView(abaSelecionada: $abaSelecionada)

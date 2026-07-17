@@ -65,10 +65,13 @@ final class OverpassService
 
             guard let latitude, let longitude else { return nil }
 
-            return PontoColeta( id: elemento.id,
+            return PontoColeta( id: "osm-\(elemento.id)",
                                 nome: elemento.tags?.nome ?? "Ponto de coleta",
                                 endereco: endereco,
-                                coordenada: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
+                                coordenada: CLLocationCoordinate2D(latitude: latitude, longitude: longitude),
+                                materiais: [],
+                                horarioFuncionamento: elemento.tags?.horarioFuncionamento,
+                                origem: .openStreetMap)
         }
     }
 }

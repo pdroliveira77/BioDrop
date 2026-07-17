@@ -21,6 +21,7 @@ struct MapaView: View
             
             Map(position: $viewModel.posicao)
             {
+                UserAnnotation()
                 ForEach(viewModel.pontosColeta)
                 {
                     ponto in
@@ -35,7 +36,9 @@ struct MapaView: View
                     }
                 }
             }
-            .mapStyle(.standard(elevation: .flat ,pointsOfInterest: .excludingAll, showsTraffic: false))
+            .mapStyle(.standard(elevation: .flat,
+                                pointsOfInterest: .excludingAll,
+                                showsTraffic: false))
             
             VStack
             {
@@ -47,15 +50,10 @@ struct MapaView: View
                                  abrirPerfil: {abaSelecionada = .perfil})
                     .padding(20)
             }
-        }
-        .onChange(of: viewModel.locationManager.location)
-        {
-            _, novaLocalizacao in
-            guard novaLocalizacao != nil else { return }
-
-            Task
+            
+            if viewModel.isLoading
             {
-                await viewModel.carregarPontosColeta()
+                CarregamentoView(texto: "Carregando pontos de coleta")
             }
         }
         .onAppear

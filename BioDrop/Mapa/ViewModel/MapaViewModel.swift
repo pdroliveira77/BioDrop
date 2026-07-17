@@ -17,8 +17,8 @@ final class MapaViewModel: ObservableObject
     @Published var posicao: MapCameraPosition = .region(
         MKCoordinateRegion(
             center: CLLocationCoordinate2D(
-                latitude: -19.83159,
-                longitude: -43.91689
+                latitude: -19.828759,
+                longitude: -43.935475
             ),
             span: MKCoordinateSpan(
                 latitudeDelta: 0.01,
@@ -27,23 +27,54 @@ final class MapaViewModel: ObservableObject
         )
     )
     @Published var pontosColeta: [PontoColeta] = []
+    @Published var isLoading = false
     
-    private let service = OverpassService()
+    private let repository: PontosColetaRepository
+    private var cancellables = Set<AnyCancellable>()
     let locationManager = LocationManager()
-
-    @MainActor
-    func carregarPontosColeta() async
+    
+    init(repository: PontosColetaRepository)
     {
-        guard let localizacao = locationManager.location else
-        {
-            print("Localização ainda não disponível.")
-            return
-        }
+        self.repository = repository
+        self.observarLocalizacao()
+    }
+    
+    convenience init()
+    {
+        self.init(repository: PontosColetaRepository())
+    }
+    
+    private func observarLocalizacao()
+    {
+        locationManager.$location
+            .compactMap { $0 }
+            .first()
+            .sink
+            {
+                [weak self] location in
+
+                Task
+                {
+                    await self?.carregarPontosColeta(
+                        latitude: location.coordinate.latitude,
+                        longitude: location.coordinate.longitude
+                    )
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    func carregarPontosColeta(latitude: Double, longitude: Double) async
+    {
+        isLoading = true
+        defer { isLoading = false }
         
         do
         {
-            pontosColeta = try await service.buscarPontos(latitude: localizacao.coordinate.latitude,
-                                                          longitude: localizacao.coordinate.longitude)
+            let pontos = try await repository.buscarPontos(latitude: latitude, longitude: longitude)
+            pontosColeta = pontos
+            
+            print("Total de pontos no mapa: \(pontosColeta.count)")
         }
         catch
         {

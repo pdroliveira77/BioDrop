@@ -24,7 +24,21 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
 
     func solicitarPermissao()
     {
-        manager.requestWhenInUseAuthorization()
+        switch manager.authorizationStatus
+        {
+
+        case .authorizedAlways,
+             .authorizedWhenInUse:
+
+            manager.startUpdatingLocation()
+
+        case .notDetermined:
+
+            manager.requestWhenInUseAuthorization()
+
+        default:
+            break
+        }
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager)
@@ -33,50 +47,50 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         {
         case .notDetermined:
             print("NOT DETERMINED")
-
+            
         case .authorizedWhenInUse:
             print("AUTHORIZED WHEN IN USE")
-
+            
         case .authorizedAlways:
             print("AUTHORIZED ALWAYS")
-
+            
         case .denied:
             print("DENIED")
-
+            
         case .restricted:
             print("RESTRICTED")
-
+            
         @unknown default:
             print("UNKNOWN")
         }
-
+        
         switch manager.authorizationStatus
         {
         case .authorizedWhenInUse,
-             .authorizedAlways:
-
+                .authorizedAlways:
+            
             print("Permissão concedida")
             manager.startUpdatingLocation()
-
+            
         case .denied:
             print("Permissão negada")
-
+            
         case .restricted:
             print("Permissão restrita")
-
+            
         case .notDetermined:
             print("Ainda não determinada")
-
+            
         @unknown default:
             break
         }
     }
-
+    
     func locationManager(
         _ manager: CLLocationManager,
         didUpdateLocations locations: [CLLocation]
-    )
-    {
+    ) {
         location = locations.last
-    }
+        manager.stopUpdatingLocation()
+    }    
 }

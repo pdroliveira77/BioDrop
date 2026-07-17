@@ -54,9 +54,7 @@ struct CadastroView: View
                                   descricaoIcone: "checkmark.shield")
                     }
                     
-                    BotaoAvancar(
-                        titulo: "Criar Conta"
-                    )
+                    BotaoPrincipal(titulo: "Criar Conta")
                     {
                         viewModel.criarConta
                         {

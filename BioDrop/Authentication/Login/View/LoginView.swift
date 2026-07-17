@@ -49,9 +49,9 @@ struct LoginView: View
                                     })
                         }
                         
-                        BotaoEntrar(titulo: "Entrar")
+                        BotaoPrincipal(titulo: "Entrar")
                         {
-                            viewModel.login()
+                            viewModel.realizarLogin()
                         }
                     }
                     .padding(24)
@@ -87,6 +87,11 @@ struct LoginView: View
                     Spacer()
                 }
                 .padding(.horizontal, 24)
+                
+                if viewModel.isLoading
+                {
+                    CarregamentoView(texto: "Aguarde um instante")
+                }
             }
             .alert(
                 "BioDrop",

@@ -16,8 +16,9 @@ final class LoginViewModel: ObservableObject
     @Published var senha = ""
     @Published var mensagemAlerta = ""
     @Published var exibirAlerta = false
+    @Published var isLoading = false
 
-    func login()
+    func realizarLogin()
     {
         if email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         {
@@ -32,10 +33,12 @@ final class LoginViewModel: ObservableObject
             exibirAlerta = true
             return
         }
+        self.isLoading = true
         
         AuthService.shared.login(email: email,senha: senha)
         {
             resultado in
+            self.isLoading = false
             DispatchQueue.main.async
             {
                 switch resultado
@@ -60,11 +63,14 @@ final class LoginViewModel: ObservableObject
             return
         }
         
+        self.isLoading = true
+        
         AuthService.shared.redefinirSenha(
             email: email
         )
-        { resultado in
-
+        {
+            resultado in
+            self.isLoading = false
             DispatchQueue.main.async
             {
                 switch resultado

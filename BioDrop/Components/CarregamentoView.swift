@@ -10,6 +10,7 @@ import SwiftUI
 struct CarregamentoView: View
 {
     @State private var progress: CGFloat = 0
+    private let alturaLogo: CGFloat = 140
     var texto = ""
     
     var body: some View
@@ -36,6 +37,7 @@ struct CarregamentoView: View
                                 .frame(height: progress)
                         }
                 }
+                .frame(width: alturaLogo, height: alturaLogo)
                 
                 Text(texto)
                     .font(.headline)
@@ -45,13 +47,15 @@ struct CarregamentoView: View
             .frame(width: 220, height: 220)
             .padding()
             .background(Color.white)
-            .cornerRadius(10)
-            .onAppear
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+        }
+        .onAppear
+        {
+            progress = 0
+            withAnimation(.easeInOut(duration: 2)
+                .repeatForever(autoreverses: true))
             {
-                withAnimation(.easeInOut(duration: 4))
-                {
-                    progress = 220
-                }
+                progress = alturaLogo
             }
         }
     }

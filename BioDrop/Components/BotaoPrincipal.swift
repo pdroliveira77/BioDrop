@@ -1,5 +1,5 @@
 //
-//  BotaoEntrar.swift
+//  BotaoPrincipal.swift
 //  BioDrop
 //
 //  Created by Pedro Oliveira on 28/05/26.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct BotaoEntrar: View
+struct BotaoPrincipal: View
 {
     var titulo = "Entrar"
     let acao: () -> Void
@@ -46,5 +46,5 @@ struct BotaoEntrar: View
 
 #Preview
 {
-    BotaoEntrar(acao: {})
+    BotaoPrincipal(acao: {})
 }

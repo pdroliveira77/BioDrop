@@ -10,7 +10,6 @@ import CoreLocation
 
 final class OverpassService
 {
-
     func buscarPontos(latitude: Double, longitude: Double) async throws -> [PontoColeta]
     {
         let query = """
@@ -42,8 +41,6 @@ final class OverpassService
         if let httpResponse = response as? HTTPURLResponse {
             print("Status Code:", httpResponse.statusCode)
         }
-
-        print(String(data: data, encoding: .utf8) ?? "Sem resposta")
 
         let retorno = try JSONDecoder().decode(
             RespostaOverpass.self,

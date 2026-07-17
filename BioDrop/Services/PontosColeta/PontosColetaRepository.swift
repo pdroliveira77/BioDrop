@@ -23,16 +23,27 @@ final class PontosColetaRepository
     func buscarPontos(latitude: Double, longitude: Double) async throws -> [PontoColeta]
     {
         async let consultaPBH = pbhService.buscarPontos()
-        async let consultaOSM = overpassService.buscarPontos(latitude: latitude, longitude: longitude)
+        async let consultaOSM: [PontoColeta] = {
+            do
+            {
+                return try await overpassService.buscarPontos(
+                    latitude: latitude,
+                    longitude: longitude
+                )
+            }
+            catch
+            {
+                print("Erro no Overpass: \(error.localizedDescription)")
+                return []
+            }
+        }()
 
-        let (retornoPBH, retornoOSM) = try await (consultaPBH, consultaOSM)
+        let (retornoPBH, pontosOSM) = try await (consultaPBH, consultaOSM)
 
         let pontosPBH = retornoPBH.compactMap
         {
             $0.converterParaPontoColeta()
         }
-
-        let pontosOSM = retornoOSM
 
         return mesclar(pontosPBH: pontosPBH, pontosOSM: pontosOSM)
     }

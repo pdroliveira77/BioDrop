@@ -17,8 +17,8 @@ final class MapaViewModel: ObservableObject
     @Published var posicao: MapCameraPosition = .region(
         MKCoordinateRegion(
             center: CLLocationCoordinate2D(
-                latitude: -19.828759,
-                longitude: -43.935475
+                latitude: -19.921356,
+                longitude: -43.93414
             ),
             span: MKCoordinateSpan(
                 latitudeDelta: 0.01,

@@ -36,32 +36,7 @@ struct HomeView: View
                     
                     HStack
                     {
-                        VStack(spacing: 5)
-                        {
-                            Image(systemName: diasSeguidos < 4 ? "timer" : "flame")
-                                .resizable()
-                                .frame(width: 30, height: 30)
-                                .foregroundStyle(corDestaque)
-                            
-                            Text("\(diasSeguidos)")
-                                .font(.largeTitle)
-                                .foregroundStyle(corDestaque)
-                            
-                            Text("Dias seguidos").textCase(.uppercase)
-                                .font(.caption)
-                                .foregroundStyle(corDestaque)
-                        }
-                        .padding()
-                        .background(diasSeguidos < 4 ? Color.yellow.opacity(0.2) : Color.vermelhoClaro)
-                        .clipShape(RoundedRectangle(cornerRadius: 16))
-                        .overlay
-                        {
-                            RoundedRectangle(cornerRadius: 16)
-                                .stroke(
-                                    corDestaque,
-                                    lineWidth: 1
-                                )
-                        }
+                        DiasSeguidosView(diasSeguidos: 0)
                         
                         Spacer()
                         

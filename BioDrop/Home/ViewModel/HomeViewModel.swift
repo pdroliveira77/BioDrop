@@ -23,4 +23,9 @@ final class HomeViewModel: ObservableObject
 
         dicaDoDia = DicasHome.todas[dia % DicasHome.todas.count]
     }
+    
+    func contarDiasSeguidos()
+    {
+        
+    }
 }

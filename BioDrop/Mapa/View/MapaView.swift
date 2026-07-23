@@ -26,11 +26,9 @@ struct MapaView: View
                 {
                     ponto in
 
-                    Annotation(
-                        ponto.nome,
-                        coordinate: ponto.coordenada
-                    ) {
-
+                    Annotation(ponto.nome,
+                               coordinate: ponto.coordenada)
+                    {
                         Image(systemName: "leaf.fill")
                             .foregroundStyle(.green)
                     }

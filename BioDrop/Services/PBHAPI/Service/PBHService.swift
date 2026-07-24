@@ -49,25 +49,3 @@ final class PBHService
         return retorno.result.records
     }
 }
-
-enum PBHServiceError: LocalizedError
-{
-    case urlInvalida
-    case respostaInvalida
-    case requisicaoNaoConcluida
-
-    var errorDescription: String?
-    {
-        switch self
-        {
-        case .urlInvalida:
-            return "Não foi possível montar a URL da PBH."
-
-        case .respostaInvalida:
-            return "A PBH retornou uma resposta inválida."
-
-        case .requisicaoNaoConcluida:
-            return "A PBH não conseguiu concluir a consulta."
-        }
-    }
-}

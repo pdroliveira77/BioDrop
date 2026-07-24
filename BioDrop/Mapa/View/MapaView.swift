@@ -12,6 +12,7 @@ struct MapaView: View
 {
     @StateObject private var viewModel = MapaViewModel()
     @Binding var abaSelecionada: AbaSelecionada
+    @State private var pontoSelecionado: PontoColeta?
     
     var body: some View
     {
@@ -29,8 +30,21 @@ struct MapaView: View
                     Annotation(ponto.nome,
                                coordinate: ponto.coordenada)
                     {
-                        Image(systemName: "leaf.fill")
-                            .foregroundStyle(.green)
+                        Button
+                        {
+                            pontoSelecionado = ponto
+                        }
+                        label:
+                        {
+                            Image(systemName: "leaf.fill")
+                                .foregroundStyle(.green)
+                                .font(.system(size: 24))
+                                .padding(8)
+                                .background(.white)
+                                .clipShape(Circle())
+                                .shadow(radius: 3)
+                        }
+                        .buttonStyle(.plain)
                     }
                 }
             }
@@ -57,6 +71,14 @@ struct MapaView: View
         .onAppear
         {
             viewModel.locationManager.solicitarPermissao()
+        }
+        .sheet(item: $pontoSelecionado)
+        {
+            ponto in
+
+            DetalhesPontoColetaView(ponto: ponto)
+                .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.visible)
         }
         .ignoresSafeArea(edges: .bottom)
     }

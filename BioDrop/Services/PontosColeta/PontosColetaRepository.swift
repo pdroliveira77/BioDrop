@@ -45,6 +45,8 @@ final class PontosColetaRepository
             $0.converterParaPontoColeta()
         }
 
+        print("Quantidade de pontos PBH: \(pontosPBH.count)")
+        print("Quantidade de pontos Overpass: \(pontosOSM.count)")
         return mesclar(pontosPBH: pontosPBH, pontosOSM: pontosOSM)
     }
 

@@ -117,10 +117,10 @@ extension PBHPontoDTO
         return PontoColeta(
             id: "pbh-\(idLEV)",
             nome: nome,
-            endereco: endereco,
+            endereco: endereco.capitalized,
             coordenada: coordinate,
             materiais: materiais,
-            horarioFuncionamento: horarioFuncionamento,
+            horarioFuncionamento: horarioFuncionamento?.capitalized,
             origem: .pbh
         )
     }
